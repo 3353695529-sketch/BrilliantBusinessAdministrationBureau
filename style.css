@@ -1,0 +1,25 @@
+body{
+    background:#0f172a;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    font-family:sans-serif;
+}
+
+.box{
+    background:#1e293b;
+    padding:40px;
+    border-radius:15px;
+    text-align:center;
+}
+
+button{
+    background:#2563eb;
+    border:none;
+    color:white;
+    padding:15px 30px;
+    border-radius:10px;
+    cursor:pointer;
+}
