@@ -2,19 +2,31 @@ const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
 const SteamStrategy = require("passport-steam").Strategy;
-const cors = require("cors");
-
+const path = require("path");
 const app = express();
 
-// 允许跨域（前端 GitHub Pages 必须）
-app.use(cors({
-    origin: "*",
-    credentials: true
-}));
+const PORT = process.env.PORT || 3000;
 
-// Session（Steam 登录必须）
+// 你的 Railway 域名
+const DOMAIN = "https://brilliantbusinessadministrationbureau-production.up.railway.app";
+
+// Steam 登录配置
+passport.use(new SteamStrategy(
+    {
+        returnURL: `${DOMAIN}/auth/steam/return`,
+        realm: DOMAIN,
+        apiKey: "你的SteamAPIKey"
+    },
+    function(identifier, profile, done) {
+        return done(null, profile);
+    }
+));
+
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((obj, done) => done(null, obj));
+
 app.use(session({
-    secret: "rp-business-secret",
+    secret: "rp-system-secret",
     resave: false,
     saveUninitialized: true
 }));
@@ -22,25 +34,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// 序列化用户
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-passport.deserializeUser((obj, done) => {
-    done(null, obj);
-});
-
-// 你的 Railway 域名
-const DOMAIN = "https://brilliantbusinessadministrationbureau-production.up.railway.app";
-
-// Steam 登录配置
-passport.use(new SteamStrategy({
-    returnURL: `${DOMAIN}/auth/steam/return`,
-    realm: DOMAIN,
-    apiKey: "8445C9B95434D43270CEB6A5450C277F"
-}, (identifier, profile, done) => {
-    return done(null, profile);
-}));
+// 静态文件（你的 index.html）
+app.use(express.static(path.join(__dirname)));
 
 // Steam 登录入口
 app.get("/auth/steam",
@@ -48,31 +43,33 @@ app.get("/auth/steam",
     (req, res) => {}
 );
 
-// Steam 登录回调
+// Steam 回调
 app.get("/auth/steam/return",
     passport.authenticate("steam", { failureRedirect: "/" }),
     (req, res) => {
-        res.redirect(`${DOMAIN}/success`);
+        res.redirect("/home");
     }
 );
 
-// 登录成功页面
-app.get("/success", (req, res) => {
-    if (!req.user) return res.send("未登录");
+// 登录成功后的页面
+app.get("/home", (req, res) => {
+    if (!req.user) return res.redirect("/");
     res.send(`
-        <h1>登录成功</h1>
-        <p>欢迎, ${req.user.displayName}</p>
-        <p>SteamID: ${req.user.id}</p>
+        <h1>登录成功！</h1>
+        <p>欢迎你，${req.user.displayName}</p>
+        <img src="${req.user.photos[2].value}">
+        <br><br>
+        <a href="/logout">退出登录</a>
     `);
 });
 
-// 测试 API
-app.get("/", (req, res) => {
-    res.send("RP API Running with Steam Login");
+// 退出登录
+app.get("/logout", (req, res) => {
+    req.logout(() => {
+        res.redirect("/");
+    });
 });
 
-// Railway 必须监听 0.0.0.0，否则会 502
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, "0.0.0.0", () => {
     console.log("Server running on port " + PORT);
 });
