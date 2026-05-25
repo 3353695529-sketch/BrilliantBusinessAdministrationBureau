@@ -15,7 +15,7 @@ passport.use(new SteamStrategy(
     {
         returnURL: `${DOMAIN}/auth/steam/return`,
         realm: DOMAIN,
-        apiKey: "你的SteamAPIKey"
+        apiKey: "8445C9B95434D43270CEB6A5450C277F"
     },
     function(identifier, profile, done) {
         return done(null, profile);
