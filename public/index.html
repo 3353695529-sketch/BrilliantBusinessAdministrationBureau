@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>RP 工商管理局</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Microsoft YaHei", sans-serif;
+        background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+        color: #fff;
+        text-align: center;
+    }
+
+    /* =======================
+       加载动画
+    ======================= */
+    #loading {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.85);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        color: white;
+        font-family: "Microsoft YaHei";
+        transition: opacity .5s ease;
+    }
+
+    .loader {
+        width: 60px;
+        height: 60px;
+        border: 6px solid rgba(255,255,255,0.2);
+        border-top-color: #00eaff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* =======================
+       页面内容样式
+    ======================= */
+    header {
+        padding: 40px 0;
+        font-size: 40px;
+        font-weight: bold;
+        letter-spacing: 3px;
+        background: rgba(255,255,255,0.03);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .container {
+        margin-top: 60px;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        width: 260px;
+        padding: 25px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        transition: 0.3s;
+        cursor: pointer;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        background: rgba(255,255,255,0.1);
+        box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    }
+
+    .card h2 {
+        margin-bottom: 15px;
+        font-size: 24px;
+    }
+
+    .card p {
+        opacity: 0.8;
+        font-size: 14px;
+    }
+
+    footer {
+        margin-top: 80px;
+        padding: 20px;
+        opacity: 0.5;
+        font-size: 14px;
+    }
+</style>
+
+</head>
+<body>
+
+<!-- =======================
+     加载动画
+======================= -->
+<div id="loading">
+    <div class="loader"></div>
+    <p>正在加载系统数据...</p>
+</div>
+
+<script>
+window.onload = () => {
+    const loading = document.getElementById("loading");
+    loading.style.opacity = "0";
+    setTimeout(() => loading.style.display = "none", 500);
+};
+</script>
+
+<!-- =======================
+     页面内容
+======================= -->
+<header>RP 工商管理局系统</header>
+
+<div class="container">
+
+    <a href="/register_company.html" style="text-decoration:none;color:white;">
+        <div class="card">
+            <h2>注册公司</h2>
+            <p>创建你的 RP 企业，上传 Logo，生成工商档案。</p>
+        </div>
+    </a>
+
+    <a href="/register_shop.html" style="text-decoration:none;color:white;">
+        <div class="card">
+            <h2>注册商铺</h2>
+            <p>登记你的 RP 商铺，展示品牌形象。</p>
+        </div>
+    </a>
+
+    <a href="/companies.html" style="text-decoration:none;color:white;">
+        <div class="card">
+            <h2>公司列表</h2>
+            <p>查看所有已注册的 RP 公司。</p>
+        </div>
+    </a>
+
+    <a href="/shops.html" style="text-decoration:none;color:white;">
+        <div class="card">
+            <h2>商铺列表</h2>
+            <p>浏览所有已登记的 RP 商铺。</p>
+        </div>
+    </a>
+
+</div>
+
+<footer>© RP 工商管理局系统</footer>
+
+</body>
+</html>
