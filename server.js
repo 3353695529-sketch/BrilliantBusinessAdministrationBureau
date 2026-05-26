@@ -167,8 +167,8 @@ app.get("/api/my", (req, res) => {
 // 🔥 自动修复：所有 HTML 路由都映射到 public 目录
 const htmlPages = [
   "index.html",
-  "companies.html",
-  "shops.html",
+  "company.html",
+  "shop.html",
   "register_company.html",
   "register_shop.html",
   "company.html",
