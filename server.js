@@ -1,19 +1,39 @@
+// ===============================
+// 基础模块
+// ===============================
 const express = require("express");
 const path = require("path");
 const multer = require("multer");
+const session = require("express-session");
+const passport = require("passport");
+const SteamStrategy = require("passport-steam").Strategy;
 const db = require("./database");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 解析表单与 JSON
+// ===============================
+// 中间件
+// ===============================
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Session（Steam 登录必须）
+app.use(session({
+    secret: "rp-system-secret",
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // 静态文件目录（必须指向 public）
 app.use(express.static(path.join(__dirname, "public")));
 
-// 上传文件目录（uploads）
+// ===============================
+// Multer 上传配置
+// ===============================
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, "uploads/"),
     filename: (req, file, cb) => {
@@ -22,6 +42,57 @@ const storage = multer.diskStorage({
     }
 });
 const upload = multer({ storage });
+
+// ===============================
+// Steam 登录配置
+// ===============================
+passport.use(new SteamStrategy(
+    {
+        returnURL: "https://brilliantbusinessadministrationbureau-production.up.railway.app/auth/steam/return",
+        realm: "https://brilliantbusinessadministrationbureau-production.up.railway.app/",
+        apiKey: "你的SteamAPIKey"
+    },
+    function (identifier, profile, done) {
+        return done(null, profile);
+    }
+));
+
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((obj, done) => done(null, obj));
+
+// ===============================
+// Steam 登录路由
+// ===============================
+app.get("/auth/steam",
+    passport.authenticate("steam", { failureRedirect: "/" })
+);
+
+app.get("/auth/steam/return",
+    passport.authenticate("steam", { failureRedirect: "/" }),
+    (req, res) => {
+        res.redirect("/"); // 登录成功后回主页
+    }
+);
+
+// 退出登录
+app.get("/logout", (req, res) => {
+    req.logout(() => {
+        res.redirect("/");
+    });
+});
+
+// ===============================
+// 获取当前登录用户信息（前端显示头像昵称）
+// ===============================
+app.get("/api/user", (req, res) => {
+    if (!req.user) return res.json({ loggedIn: false });
+
+    res.json({
+        loggedIn: true,
+        name: req.user.displayName,
+        avatar: req.user.photos[2].value
+    });
+});
 
 // ===============================
 // 注册公司 API
