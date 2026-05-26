@@ -1,7 +1,7 @@
 const sqlite3 = require("sqlite3").verbose();
 
-const db = require("./database");
-
+// 创建数据库文件 data.db
+const db = new sqlite3.Database("./data.db");
 
 db.serialize(() => {
     db.run(`
@@ -17,7 +17,7 @@ db.serialize(() => {
         CREATE TABLE IF NOT EXISTS shops (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
-            description TEXT,
+           description TEXT,
             logo TEXT
         )
     `);
