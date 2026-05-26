@@ -47,7 +47,7 @@ passport.use(
         "https://brilliantbusinessadministrationbureau-production.up.railway.app/auth/steam/return",
       realm:
         "https://brilliantbusinessadministrationbureau-production.up.railway.app/",
-      apiKey: "你的SteamAPIKey"
+      apiKey: "8445C9B95434D43270CEB6A5450C277F"
     },
     (identifier, profile, done) => {
       return done(null, profile);
