@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>公司详情</title>
+</head>
+<body>
+
+<h1>公司详情</h1>
+
+<div id="info">正在加载...</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+fetch("/api/companies")
+  .then(res => res.json())
+  .then(list => {
+    const company = list.find(c => c.id == id);
+
+    if (!company) {
+      document.getElementById("info").innerHTML = "未找到公司信息";
+      return;
+    }
+
+    document.getElementById("info").innerHTML = `
+      <h2>${company.name}</h2>
+      <p>${company.description}</p>
+      <img src="/uploads/${company.logo}" width="150">
+    `;
+  });
+</script>
+
+</body>
+</html>
