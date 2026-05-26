@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // 静态文件目录
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static("uploads"));
 
 // Multer 上传配置
@@ -47,7 +47,7 @@ passport.use(
         "https://brilliantbusinessadministrationbureau-production.up.railway.app/auth/steam/return",
       realm:
         "https://brilliantbusinessadministrationbureau-production.up.railway.app/",
-      apiKey: "8445C9B95434D43270CEB6A5450C277F"
+      apiKey: "你的SteamAPIKey"
     },
     (identifier, profile, done) => {
       return done(null, profile);
@@ -162,6 +162,29 @@ app.get("/api/my", (req, res) => {
       );
     }
   );
+});
+
+// 🔥 自动修复：所有 HTML 路由都映射到 public 目录
+const htmlPages = [
+  "index.html",
+  "companies.html",
+  "shops.html",
+  "register_company.html",
+  "register_shop.html",
+  "company.html",
+  "shop.html",
+  "me.html"
+];
+
+htmlPages.forEach((page) => {
+  app.get("/" + page, (req, res) => {
+    res.sendFile(path.join(__dirname, "public", page));
+  });
+});
+
+// 🔥 fallback：找不到页面 → 返回主页
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // Railway 端口
