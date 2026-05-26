@@ -2,33 +2,30 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>商铺详情</title>
+<title>所有商铺</title>
 </head>
 <body>
 
-<h1>商铺详情</h1>
-
-<div id="info">正在加载...</div>
+<h1>所有商铺</h1>
+<div id="list">正在加载...</div>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
-
 fetch("/api/shops")
   .then(res => res.json())
-  .then(list => {
-    const shop = list.find(s => s.id == id);
-
-    if (!shop) {
-      document.getElementById("info").innerHTML = "未找到商铺信息";
+  .then(data => {
+    if (data.length === 0) {
+      document.getElementById("list").innerHTML = "暂无商铺";
       return;
     }
 
-    document.getElementById("info").innerHTML = `
-      <h2>${shop.name}</h2>
-      <p>${shop.description}</p>
-      <img src="/uploads/${shop.logo}" width="150">
-    `;
+    document.getElementById("list").innerHTML = data.map(s => `
+      <div>
+        <h3><a href="/shop.html?id=${s.id}">${s.name}</a></h3>
+        <p>${s.description}</p>
+        <img src="/uploads/${s.logo}" width="120">
+      </div>
+      <hr>
+    `).join("");
   });
 </script>
 
