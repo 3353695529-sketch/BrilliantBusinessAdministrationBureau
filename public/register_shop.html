@@ -2,34 +2,42 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>公司详情</title>
+<title>注册商铺</title>
 </head>
 <body>
 
-<h1>公司详情</h1>
+<h1>注册商铺</h1>
 
-<div id="info">正在加载...</div>
+<form id="shopForm" enctype="multipart/form-data">
+    <label>商铺名称：</label>
+    <input type="text" name="name" required><br><br>
+
+    <label>商铺简介：</label>
+    <textarea name="description" required></textarea><br><br>
+
+    <label>上传商铺 Logo：</label>
+    <input type="file" name="logo" accept="image/*" required><br><br>
+
+    <button type="submit">提交注册</button>
+</form>
 
 <script>
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
+document.getElementById("shopForm").onsubmit = async (e) => {
+    e.preventDefault();
 
-fetch("/api/companies")
-  .then(res => res.json())
-  .then(list => {
-    const company = list.find(c => c.id == id);
+    const formData = new FormData(e.target);
 
-    if (!company) {
-      document.getElementById("info").innerHTML = "未找到公司信息";
-      return;
+    const res = await fetch("/api/registerShop", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+        window.location.href = `/shop.html?id=${data.id}`;
     }
-
-    document.getElementById("info").innerHTML = `
-      <h2>${company.name}</h2>
-      <p>${company.description}</p>
-      <img src="/uploads/${company.logo}" width="150">
-    `;
-  });
+};
 </script>
 
 </body>
