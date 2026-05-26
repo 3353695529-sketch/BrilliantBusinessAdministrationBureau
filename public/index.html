@@ -90,7 +90,7 @@
 <body>
 
 <header>
-    <img src="https://img.cdn1.vip/i/6a0d663ee37bc_1779263038.jpeg">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Emblem_of_China.svg/1200px-Emblem_of_China.svg.png">
     <h1>璀璨工商管理局 · 官方系统</h1>
 </header>
 
@@ -114,20 +114,35 @@
 fetch("/api/my")
   .then(res => res.json())
   .then(data => {
+
+    /* 未登录 → 显示 Steam 登录按钮 */
     if (!data.loggedIn) {
       document.getElementById("login").innerHTML = `
         <p>您尚未登录。</p>
         <a href="/auth/steam" style="color:#0c4b85;font-weight:bold;">使用 Steam 登录</a>
       `;
-    } else {
-      document.getElementById("login").innerHTML = `
-        <img src="${data.user.avatar}" width="60">
-        <div>
-            <p style="margin:0;font-size:18px;">欢迎回来，${data.user.name}</p>
-            <a href="/me.html" style="color:#0c4b85;font-weight:bold;">进入我的主页</a>
-        </div>
-      `;
+      return;
     }
+
+    /* 已登录 → 显示头像 + 欢迎 + 进入主页 + 切换账号 + 退出登录 */
+    document.getElementById("login").innerHTML = `
+      <img src="${data.user.avatar}" width="60">
+      <div>
+        <p style="margin:0;font-size:18px;">欢迎回来，${data.user.name}</p>
+
+        <a href="/me.html" style="color:#0c4b85;font-weight:bold;display:block;margin-top:5px;">
+          进入我的主页
+        </a>
+
+        <a href="/auth/steam" style="color:#0c4b85;font-weight:bold;display:block;margin-top:5px;">
+          切换 Steam 账号
+        </a>
+
+        <a href="/logout" style="color:#b30000;font-weight:bold;display:block;margin-top:5px;">
+          退出登录
+        </a>
+      </div>
+    `;
   });
 </script>
 
