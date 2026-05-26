@@ -1,7 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>注册公司</title>
+</head>
+<body>
+
 <h1>注册公司</h1>
-<form action="/api/registerCompany" method="POST" enctype="multipart/form-data">
-    <input name="companyName" placeholder="公司名称" required><br>
-    <textarea name="description" placeholder="公司简介" required></textarea><br>
-    <input type="file" name="logo" accept="image/*" required><br>
-    <button>提交</button>
+
+<form id="companyForm" enctype="multipart/form-data">
+    <label>公司名称：</label>
+    <input type="text" name="name" required><br><br>
+
+    <label>公司简介：</label>
+    <textarea name="description" required></textarea><br><br>
+
+    <label>上传公司 Logo：</label>
+    <input type="file" name="logo" accept="image/*" required><br><br>
+
+    <button type="submit">提交注册</button>
 </form>
+
+<script>
+document.getElementById("companyForm").onsubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const res = await fetch("/api/registerCompany", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+        // 跳转到公司详情页
+        window.location.href = `/company.html?id=${data.id}`;
+    }
+};
+</script>
+
+</body>
+</html>
