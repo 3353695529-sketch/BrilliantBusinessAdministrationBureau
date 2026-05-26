@@ -3,207 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <title>璀璨工商管理局</title>
+
 <style>
-/* ===========================
-   加载动画
-=========================== */
-#loading {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  color: white;
-  font-family: "Microsoft YaHei";
-  transition: opacity .5s ease;
-}
+    body {
+        margin: 0;
+        font-family: "Microsoft YaHei", sans-serif;
+        background: #f5f7fa;
+        color: #333;
+    }
 
-.loader {
-  width: 60px;
-  height: 60px;
-  border: 6px solid rgba(255,255,255,0.2);
-  border-top-color: #00eaff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 20px;
-}
+    /* 顶部政府横幅 */
+    header {
+        background: linear-gradient(90deg, #0a3d62, #0c4b85);
+        color: white;
+        padding: 25px 40px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+    header img {
+        width: 60px;
+    }
 
-/* ===========================
-   页面主要样式
-=========================== */
-body {
-  margin: 0;
-  padding: 0;
-  background: #0a0f24;
-  color: white;
-  font-family: "Microsoft YaHei";
-  text-align: center;
-}
+    header h1 {
+        font-size: 28px;
+        margin: 0;
+        letter-spacing: 2px;
+    }
 
-header {
-  padding: 40px 0;
-  font-size: 40px;
-  font-weight: bold;
-  letter-spacing: 2px;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
+    /* 主体容器 */
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
 
-#userInfo {
-  margin-top: 20px;
-  font-size: 18px;
-}
+    /* 登录区域 */
+    #login {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
 
-#userInfo img {
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
+    #login img {
+        border-radius: 50%;
+    }
 
-#steamLogin {
-  padding: 12px 25px;
-  background: #00aaff;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-  transition: 0.3s;
-}
+    /* 导航卡片 */
+    .nav-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 20px;
+    }
 
-#steamLogin:hover {
-  background: #0088dd;
-}
+    .card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: 0.25s;
+        border-left: 5px solid #0c4b85;
+    }
 
-.container {
-  margin-top: 60px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 25px;
-}
+    .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
 
-.card {
-  width: 260px;
-  padding: 25px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 15px;
-  box-shadow: 0 20px 30px rgba(0,0,0,0.4);
-  transition: 0.3s;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.1);
-}
+    .card a {
+        text-decoration: none;
+        color: #0c4b85;
+        font-size: 18px;
+        font-weight: bold;
+    }
 
-.card:hover {
-  transform: translateY(-10px);
-  background: rgba(255,255,255,0.1);
-  box-shadow: 0 30px 40px rgba(0,0,0,0.6);
-}
-
-.card h2 {
-  margin-bottom: 15px;
-  font-size: 24px;
-}
-
-.card p {
-  opacity: 0.8;
-  font-size: 16px;
-}
-
-footer {
-  margin-top: 100px;
-  padding: 20px;
-  opacity: 0.5;
-  font-size: 16px;
-}
 </style>
 </head>
-
 <body>
 
-<!-- 加载动画 -->
-<div id="loading">
-  <div class="loader"></div>
-  <p>正在加载数据，请稍候...</p>
+<header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Emblem_of_China.svg/1200px-Emblem_of_China.svg.png">
+    <h1>璀璨工商管理局 · 官方系统</h1>
+</header>
+
+<div class="container">
+
+    <div id="login">正在加载...</div>
+
+    <h2>系统导航</h2>
+
+    <div class="nav-grid">
+        <div class="card"><a href="/register_company.html">注册公司</a></div>
+        <div class="card"><a href="/register_shop.html">注册商铺</a></div>
+        <div class="card"><a href="/companies.html">查看所有公司</a></div>
+        <div class="card"><a href="/shops.html">查看所有商铺</a></div>
+        <div class="card"><a href="/me.html">我的主页</a></div>
+    </div>
+
 </div>
 
 <script>
-window.onload = () => {
-  const loading = document.getElementById("loading");
-  loading.style.opacity = "0";
-  setTimeout(() => loading.style.display = "none", 500);
-};
-</script>
-
-<header>欢迎访问工程师导航站</header>
-
-<!-- Steam 用户信息显示区 -->
-<div id="userInfo">正在加载用户信息...</div>
-
-<script>
-// 获取 Steam 登录状态
-fetch("/api/user")
+fetch("/api/my")
   .then(res => res.json())
   .then(data => {
-    const box = document.getElementById("userInfo");
-
     if (!data.loggedIn) {
-      box.innerHTML = `
-        <button id="steamLogin">使用 Steam 登录</button>
+      document.getElementById("login").innerHTML = `
+        <p>您尚未登录。</p>
+        <a href="/auth/steam" style="color:#0c4b85;font-weight:bold;">使用 Steam 登录</a>
       `;
-      document.getElementById("steamLogin").onclick = () => {
-        window.location.href = "/auth/steam";
-      };
     } else {
-      box.innerHTML = `
-        <img src="${data.avatar}" width="64">
-        <p>欢迎你，${data.name}</p>
-        <a href="/logout" style="color:#00eaff;">退出登录</a>
+      document.getElementById("login").innerHTML = `
+        <img src="${data.user.avatar}" width="60">
+        <div>
+            <p style="margin:0;font-size:18px;">欢迎回来，${data.user.name}</p>
+            <a href="/me.html" style="color:#0c4b85;font-weight:bold;">进入我的主页</a>
+        </div>
       `;
     }
   });
 </script>
-
-<!-- 主功能区 -->
-<div class="container">
-  <a href="register_company.html" style="text-decoration:none;color:white;">
-    <div class="card">
-      <h2>企业注册</h2>
-      <p>创建您的公司账户 上传 Logo 注册工程师</p>
-    </div>
-  </a>
-
-  <a href="register_shop.html" style="text-decoration:none;color:white;">
-    <div class="card">
-      <h2>商铺注册</h2>
-      <p>创建您的商铺账户 新店铺注册</p>
-    </div>
-  </a>
-
-  <a href="companies.html" style="text-decoration:none;color:white;">
-    <div class="card">
-      <h2>企业导航</h2>
-      <p>浏览企业信息 查找公司</p>
-    </div>
-  </a>
-
-  <a href="shops.html" style="text-decoration:none;color:white;">
-    <div class="card">
-      <h2>商铺导航</h2>
-      <p>浏览商铺信息 查找商铺</p>
-    </div>
-  </a>
-</div>
-
-<footer>© 工程师导航站版权所有</footer>
 
 </body>
 </html>
