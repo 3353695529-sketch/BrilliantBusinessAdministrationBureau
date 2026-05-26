@@ -10,7 +10,7 @@ const db = require("./database");
 const app = express();
 
 // 管理员密码（自己改）
-const ADMIN_PASSWORD = "123456";
+const ADMIN_PASSWORD = "20090325";
 let adminLoggedIn = false;
 
 // 允许跨域
