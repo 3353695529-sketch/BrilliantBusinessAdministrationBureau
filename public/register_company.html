@@ -35,7 +35,6 @@ document.getElementById("companyForm").onsubmit = async (e) => {
     const data = await res.json();
 
     if (data.success) {
-        // 跳转到公司详情页
         window.location.href = `/company.html?id=${data.id}`;
     }
 };
