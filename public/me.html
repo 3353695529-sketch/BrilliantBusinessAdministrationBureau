@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>我的主页</title>
+</head>
+<body>
+
+<h1>我的主页</h1>
+
+<div id="user"></div>
+<hr>
+<h2>我的公司</h2>
+<div id="companies"></div>
+<hr>
+<h2>我的商铺</h2>
+<div id="shops"></div>
+
+<script>
+fetch("/api/my")
+  .then(res => res.json())
+  .then(data => {
+    if (!data.loggedIn) {
+      document.body.innerHTML = `
+        <p>你还没有登录。</p>
+        <a href="/auth/steam">点击这里使用 Steam 登录</a>
+      `;
+      return;
+    }
+
+    // 显示用户信息
+    document.getElementById("user").innerHTML = `
+      <img src="${data.user.avatar}" width="64" style="border-radius:50%">
+      <p>欢迎你，${data.user.name}</p>
+    `;
+
+    // 显示公司
+    if (data.companies.length === 0) {
+      document.getElementById("companies").innerHTML = "你还没有创建公司";
+    } else {
+      document.getElementById("companies").innerHTML = data.companies.map(c => `
+        <div>
+          <h3>${c.name}</h3>
+          <p>${c.description}</p>
+          <img src="/uploads/${c.logo}" width="120">
+        </div>
+      `).join("<br>");
+    }
+
+    // 显示商铺
+    if (data.shops.length === 0) {
+      document.getElementById("shops").innerHTML = "你还没有创建商铺";
+    } else {
+      document.getElementById("shops").innerHTML = data.shops.map(s => `
+        <div>
+          <h3>${s.name}</h3>
+          <p>${s.description}</p>
+          <img src="/uploads/${s.logo}" width="120">
+        </div>
+      `).join("<br>");
+    }
+  });
+</script>
+
+</body>
+</html>
