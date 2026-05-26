@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>公司详情 - 璀璨工商管理局</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Microsoft YaHei", sans-serif;
+        background: #f5f7fa;
+        color: #333;
+    }
+
+    header {
+        background: linear-gradient(90deg, #0a3d62, #0c4b85);
+        color: white;
+        padding: 25px 40px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    header img {
+        width: 60px;
+    }
+
+    header h1 {
+        font-size: 26px;
+        margin: 0;
+        letter-spacing: 2px;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-left: 5px solid #0c4b85;
+    }
+
+    .logo {
+        width: 150px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    button {
+        padding: 10px 18px;
+        background: #c0392b;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.25s;
+        margin-top: 20px;
+    }
+
+    button:hover {
+        background: #922b21;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Emblem_of_China.svg/1200px-Emblem_of_China.svg.png">
+    <h1>璀璨工商管理局 · 公司详情</h1>
+</header>
+
+<div class="container">
+    <div class="card" id="content">加载中...</div>
+</div>
+
+<script>
+const id = new URLSearchParams(location.search).get("id");
+
+fetch("/api/companies")
+  .then(res => res.json())
+  .then(list => {
+    const c = list.find(x => x.id == id);
+    if (!c) {
+      document.getElementById("content").innerHTML = "未找到该公司";
+      return;
+    }
+
+    document.getElementById("content").innerHTML = `
+      <img class="logo" src="/uploads/${c.logo}">
+      <h2>${c.name}</h2>
+      <p>${c.description}</p>
+      <button onclick="deleteCompany(${c.id})">删除公司</button>
+    `;
+  });
+
+function deleteCompany(id) {
+  if (!confirm("确定要删除公司吗？")) return;
+
+  fetch("/api/deleteCompany/" + id, { method: "DELETE" })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      if (data.success) location.href = "/me.html";
+    });
+}
+</script>
+
+</body>
+</html>
