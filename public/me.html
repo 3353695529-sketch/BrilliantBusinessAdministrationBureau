@@ -28,13 +28,11 @@ fetch("/api/my")
       return;
     }
 
-    // 显示用户信息
     document.getElementById("user").innerHTML = `
       <img src="${data.user.avatar}" width="64" style="border-radius:50%">
       <p>欢迎你，${data.user.name}</p>
     `;
 
-    // 显示公司
     if (data.companies.length === 0) {
       document.getElementById("companies").innerHTML = "你还没有创建公司";
     } else {
@@ -47,7 +45,6 @@ fetch("/api/my")
       `).join("<br>");
     }
 
-    // 显示商铺
     if (data.shops.length === 0) {
       document.getElementById("shops").innerHTML = "你还没有创建商铺";
     } else {
