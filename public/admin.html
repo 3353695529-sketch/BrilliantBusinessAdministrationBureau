@@ -11,7 +11,6 @@
         background: #f5f7fa;
         color: #333;
     }
-
     header {
         background: linear-gradient(90deg, #8e0000, #b30000);
         color: white;
@@ -21,23 +20,17 @@
         gap: 20px;
         box-shadow: 0 3px 10px rgba(0,0,0,0.2);
     }
-
-    header img {
-        width: 60px;
-    }
-
+    header img { width: 60px; }
     header h1 {
         font-size: 26px;
         margin: 0;
         letter-spacing: 2px;
     }
-
     .container {
         max-width: 1100px;
         margin: 40px auto;
         padding: 0 20px;
     }
-
     .section {
         background: white;
         padding: 25px;
@@ -46,30 +39,23 @@
         margin-bottom: 30px;
         border-left: 5px solid #b30000;
     }
-
     .title {
         font-size: 22px;
         font-weight: bold;
         color: #b30000;
         margin-bottom: 15px;
     }
-
     table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 15px;
     }
-
     th, td {
         padding: 12px;
         border-bottom: 1px solid #ddd;
         text-align: left;
     }
-
-    th {
-        background: #f0f0f0;
-    }
-
+    th { background: #f0f0f0; }
     button {
         padding: 8px 14px;
         background: #c0392b;
@@ -79,9 +65,19 @@
         cursor: pointer;
         transition: 0.25s;
     }
-
-    button:hover {
-        background: #922b21;
+    button:hover { background: #922b21; }
+    #adminBar {
+        padding: 15px 40px;
+        background: #fff3cd;
+        border-bottom: 1px solid #f1c40f;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    #adminBar input {
+        padding: 6px 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
     }
 </style>
 </head>
@@ -91,6 +87,12 @@
     <img src="https://img.cdn1.vip/i/6a0d663ee37bc_1779263038.jpeg">
     <h1>璀璨工商管理局 · 后台管理系统</h1>
 </header>
+
+<div id="adminBar">
+    <input id="adminPass" type="password" placeholder="输入管理员密码">
+    <button onclick="adminLogin()">登录后台</button>
+    <button onclick="adminLogout()">退出后台</button>
+</div>
 
 <div class="container">
 
@@ -123,6 +125,29 @@
 </div>
 
 <script>
+// 管理员登录
+function adminLogin() {
+  const password = document.getElementById("adminPass").value;
+
+  fetch("/api/admin/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password })
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      if (data.success) location.reload();
+    });
+}
+
+// 管理员登出
+function adminLogout() {
+  fetch("/api/admin/logout", { method: "POST" })
+    .then(res => res.json())
+    .then(() => location.reload());
+}
+
 // 加载公司
 fetch("/api/companies")
   .then(res => res.json())
