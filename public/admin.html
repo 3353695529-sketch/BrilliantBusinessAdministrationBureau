@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>后台管理系统 - 璀璨工商管理局</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Microsoft YaHei", sans-serif;
+        background: #f5f7fa;
+        color: #333;
+    }
+
+    header {
+        background: linear-gradient(90deg, #8e0000, #b30000);
+        color: white;
+        padding: 25px 40px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    header img {
+        width: 60px;
+    }
+
+    header h1 {
+        font-size: 26px;
+        margin: 0;
+        letter-spacing: 2px;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .section {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+        border-left: 5px solid #b30000;
+    }
+
+    .title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #b30000;
+        margin-bottom: 15px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    th, td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background: #f0f0f0;
+    }
+
+    button {
+        padding: 8px 14px;
+        background: #c0392b;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+    button:hover {
+        background: #922b21;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Emblem_of_China.svg/1200px-Emblem_of_China.svg.png">
+    <h1>璀璨工商管理局 · 后台管理系统</h1>
+</header>
+
+<div class="container">
+
+    <div class="section">
+        <div class="title">所有公司</div>
+        <table id="companyTable">
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>描述</th>
+                <th>Logo</th>
+                <th>操作</th>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="title">所有商铺</div>
+        <table id="shopTable">
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>描述</th>
+                <th>Logo</th>
+                <th>操作</th>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+<script>
+// 加载公司
+fetch("/api/companies")
+  .then(res => res.json())
+  .then(data => {
+    const table = document.getElementById("companyTable");
+
+    data.forEach(c => {
+      table.innerHTML += `
+        <tr>
+          <td>${c.id}</td>
+          <td>${c.name}</td>
+          <td>${c.description}</td>
+          <td><img src="/uploads/${c.logo}" width="60"></td>
+          <td>
+            <button onclick="deleteCompany(${c.id})">删除</button>
+          </td>
+        </tr>
+      `;
+    });
+  });
+
+// 加载商铺
+fetch("/api/shops")
+  .then(res => res.json())
+  .then(data => {
+    const table = document.getElementById("shopTable");
+
+    data.forEach(s => {
+      table.innerHTML += `
+        <tr>
+          <td>${s.id}</td>
+          <td>${s.name}</td>
+          <td>${s.description}</td>
+          <td><img src="/uploads/${s.logo}" width="60"></td>
+          <td>
+            <button onclick="deleteShop(${s.id})">删除</button>
+          </td>
+        </tr>
+      `;
+    });
+  });
+
+// 删除公司
+function deleteCompany(id) {
+  if (!confirm("确定要删除该公司吗？")) return;
+
+  fetch("/api/deleteCompany/" + id, { method: "DELETE" })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      if (data.success) location.reload();
+    });
+}
+
+// 删除商铺
+function deleteShop(id) {
+  if (!confirm("确定要删除该商铺吗？")) return;
+
+  fetch("/api/deleteShop/" + id, { method: "DELETE" })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      if (data.success) location.reload();
+    });
+}
+</script>
+
+</body>
+</html>
