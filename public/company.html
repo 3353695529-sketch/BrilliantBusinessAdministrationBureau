@@ -2,12 +2,83 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>所有公司</title>
+<title>所有公司 - 璀璨工商管理局</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Microsoft YaHei", sans-serif;
+        background: #f5f7fa;
+        color: #333;
+    }
+
+    header {
+        background: linear-gradient(90deg, #0a3d62, #0c4b85);
+        color: white;
+        padding: 25px 40px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    header img {
+        width: 60px;
+    }
+
+    header h1 {
+        font-size: 26px;
+        margin: 0;
+        letter-spacing: 2px;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        display: flex;
+        gap: 20px;
+        border-left: 5px solid #0c4b85;
+        transition: 0.25s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .card img {
+        width: 120px;
+        border-radius: 8px;
+    }
+
+    .card a {
+        text-decoration: none;
+        color: #0c4b85;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+</style>
 </head>
 <body>
 
-<h1>所有公司</h1>
-<div id="list">正在加载...</div>
+<header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Emblem_of_China.svg/1200px-Emblem_of_China.svg.png">
+    <h1>璀璨工商管理局 · 所有公司</h1>
+</header>
+
+<div class="container">
+    <div id="list">正在加载...</div>
+</div>
 
 <script>
 fetch("/api/companies")
@@ -19,12 +90,13 @@ fetch("/api/companies")
     }
 
     document.getElementById("list").innerHTML = data.map(c => `
-      <div>
-        <h3><a href="/company.html?id=${c.id}">${c.name}</a></h3>
-        <p>${c.description}</p>
-        <img src="/uploads/${c.logo}" width="120">
+      <div class="card">
+        <img src="/uploads/${c.logo}">
+        <div>
+          <a href="/company.html?id=${c.id}">${c.name}</a>
+          <p>${c.description}</p>
+        </div>
       </div>
-      <hr>
     `).join("");
   });
 </script>
