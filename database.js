@@ -9,7 +9,8 @@ db.serialize(() => {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             description TEXT,
-            logo TEXT
+            logo TEXT,
+            owner TEXT
         )
     `);
 
@@ -17,10 +18,12 @@ db.serialize(() => {
         CREATE TABLE IF NOT EXISTS shops (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
-           description TEXT,
-            logo TEXT
+            description TEXT,
+            logo TEXT,
+            owner TEXT
         )
     `);
 });
+
 
 module.exports = db;
